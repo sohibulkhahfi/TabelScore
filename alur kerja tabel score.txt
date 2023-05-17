@@ -1,0 +1,10 @@
+//Halaman Awal
+-User memilih jumlah pemain yang ingin bermain
+-User memasukan nama pemain 
+-Nama dan jumlah pemain disimpan ke dalam localStorage dan halaman berganti ke halaman penilaian
+
+//Halaman Penilaian
+-Berisi tampilan score nilai pemain yang sudah diurutkan dari yang paling besar ke kecil
+-User mengisikan nilai ke form pengisian nilai
+-Saat user menekan simpan nilai, nilai otomatis diurutkan dan tampil
+-Ketika User telah selesai bermain, user dapat menekan tombol reset dan semua data nilai serta nama pemain akan terhapus dari localStorage browser

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+    <title>Table Score</title>
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid justify-content-center">
+        <span class="navbar-brand mb-0 h1">Table Score</span>
+      </div>
+    </nav>
+    <section id="formIsi" class="container-fluid"></section>
+
+    <script src="jquery-3.7.0.min.js"></script>
+    
+    <script>
+      $(document).ready(function () {
+        if (localStorage.getItem("tampilanNilai") === "true") {
+          let nilaiPlayer = JSON.parse(localStorage.getItem("nilaiPlayer"));
+          const hasilJumlah = {};
+          Object.keys(nilaiPlayer).forEach(function (key) {
+            const sum = nilaiPlayer[key].reduce(function (total, value) {
+              return total + parseInt(value);
+            }, 0);
+            hasilJumlah[key] = sum;
+          });
+          let nilaiDiurutkan = Object.fromEntries(Object.entries(hasilJumlah).sort(([, a], [, b]) => b - a));
+          tampilkanNilai(nilaiDiurutkan);
+        } else {
+          $("#formIsi").append(selectHtml);
+          const jumlahPlayerDipilih = $("#jumlah-player").val();
+          generatePlayerInputs(jumlahPlayerDipilih);
+          // Tambahkan event listener untuk elemen dropdown jumlah player
+          $("#jumlah-player").on("change", function () {
+            const jumlahPlayerDipilih = $(this).val();
+            generatePlayerInputs(jumlahPlayerDipilih);
+          });
+
+          //fungsi ketika tombol simpan di tekan
+          $("#mengisiNama").submit(function (e) {
+            e.preventDefault(); // mencegah form submit secara default
+            // kode untuk menyimpan ke local storage
+            // ambil nilai jumlahPlayer
+            const jumlahPlayer = $("#jumlah-player").val();
+
+            // ambil nilai dari setiap input nama player dan simpan ke dalam array
+            const nilaiPlayer = {};
+            for (let i = 1; i <= jumlahPlayer; i++) {
+              const namaPlayer = $(`#player${i}`).val();
+              nilaiPlayer[namaPlayer] = [];
+            }
+            // simpan nilai ke dalam localStorage
+            localStorage.setItem("jumlahPlayer", jumlahPlayer);
+            localStorage.setItem("nilaiPlayer", JSON.stringify(nilaiPlayer));
+            localStorage.setItem("tampilanNilai", true);
+            $("#formIsi").empty();
+            tampilkanNilai(nilaiPlayer);
+          });
+        }
+      });
+    </script>
+
+    <script src="app.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+  </body>
+</html>
